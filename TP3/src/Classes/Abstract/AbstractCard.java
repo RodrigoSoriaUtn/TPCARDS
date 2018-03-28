@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.Abstract;
+
+import Classes.SpanishTypeOfCard;
 
 /**
  *
  * @author alumno
  */
-public class Card {
-    private int value;
-    private TypeOfCard type;
+public class AbstractCard {
+    private final int value;
+    private final EnumerableTypeOfCard type;
 
-    public Card(int value, TypeOfCard type) {
+    public AbstractCard(int value, EnumerableTypeOfCard type) {
         this.value = value;
         this.type = type;
     }
@@ -22,16 +24,7 @@ public class Card {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public TypeOfCard getType() {
+    public EnumerableTypeOfCard getType() {
         return type;
     }
-
-    public void setType(TypeOfCard type) {
-        this.type = type;
-    }
-
 }

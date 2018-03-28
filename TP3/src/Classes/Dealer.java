@@ -5,10 +5,48 @@
  */
 package Classes;
 
+import Classes.Abstract.AbstractDeck;
+
 /**
  *
  * @author alumno
  */
-public class Dealer {
+public class Dealer{
+    
+    private AbstractDeck deck;
+    private String nombre;
+    private String apellido;
+
+    public Dealer(String nombre, String apellido){
+        this(null, nombre, apellido);
+    }
+    
+    public Dealer(AbstractDeck deck, String nombre, String apellido) {
+        this.deck = deck;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+    
+    public void throwCard(){
+        
+    }
+    
+    public void setDeck(AbstractDeck deck) {
+        this.deck = deck;
+    }
+    
+    public AbstractDeck getDeck() {
+        return deck;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+    
+    
     
 }

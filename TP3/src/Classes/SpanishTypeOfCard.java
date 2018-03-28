@@ -5,11 +5,12 @@
  */
 package Classes;
 
+import Classes.Abstract.EnumerableTypeOfCard;
+
 /**
  *
  * @author alumno
  */
-public enum TypeOfCard{
+public enum SpanishTypeOfCard implements EnumerableTypeOfCard{
     CUP, SWORD, CLUB, GOLD;
-    
 }
