@@ -17,8 +17,8 @@ public class SpanishDeck extends AbstractDeck{
     public SpanishDeck(boolean withCards) {
         cards = new Stack();
         if(withCards){
-            for(int i = 1; i < 13; i++){
-                for(int palo = 0; palo < 4; palo++){
+            for(int palo = 0; palo < 4; palo++){
+                for(int i = 1; i < 13; i++){
                     this.addCard(new SpanishCard(i, SpanishTypeOfCard.values()[palo]));
                 }
             }

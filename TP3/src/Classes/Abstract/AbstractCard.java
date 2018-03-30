@@ -5,8 +5,6 @@
  */
 package Classes.Abstract;
 
-import Classes.SpanishTypeOfCard;
-
 /**
  *
  * @author alumno

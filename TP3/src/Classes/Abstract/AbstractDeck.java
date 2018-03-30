@@ -17,7 +17,7 @@ import java.util.Stack;
 public abstract class AbstractDeck <T extends AbstractCard> {
     protected List<T> cards;
     
-    public void mezclar(){
+    public void shuffle(){
         Collections.shuffle(this.cards);
     }
     
@@ -43,6 +43,10 @@ public abstract class AbstractDeck <T extends AbstractCard> {
     
     public void addCard(T card){
         ((Stack)cards).push(card);
+    }
+    
+    public boolean isEmpty(){
+        return cards.isEmpty();
     }
     
 }
