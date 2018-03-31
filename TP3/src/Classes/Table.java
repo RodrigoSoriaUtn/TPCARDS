@@ -21,8 +21,16 @@ public class Table {
     
     public AbstractCard takeThrowedCard(){
         synchronized(this){
+           
+            while(!isAcardOnTheTable()){
+                try {
+                    wait();
+                } catch (InterruptedException ex) { }
+            }
+            
             AbstractCard card = cardOnTable;
             cardOnTable = null;
+            notifyAll();
             return card;
         }
     }
@@ -30,6 +38,7 @@ public class Table {
     public void setCardOnTable(AbstractCard card){
         synchronized(this){
             this.cardOnTable = card;
+            notifyAll();
         }
     }
     

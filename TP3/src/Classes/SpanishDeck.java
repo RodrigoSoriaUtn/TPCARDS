@@ -24,4 +24,9 @@ public class SpanishDeck extends AbstractDeck{
             }
         }
     }
+
+    @Override
+    public AbstractDeck generateCleanDeck() {
+        return new SpanishDeck(false);
+    }
 }

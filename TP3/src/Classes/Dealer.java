@@ -29,8 +29,12 @@ public class Dealer extends Observable{
         this.table = table;
     }
     
-    
-    public void throwCards(){ // will throw all the cards to the table, one by one while the players take it from the table.
+    /** Will throw all the cards to the table, one by one while the players 
+      * take it from the table. When the deck is empty it will notify to the 
+      * players that the game have end.
+      *
+      */
+    public void throwCards(){ // 
         while(deck != null && !deck.isEmpty()){
             if(!table.isAcardOnTheTable()){
                 table.setCardOnTable(deck.takeCard());
@@ -38,7 +42,7 @@ public class Dealer extends Observable{
         }
         //Avisa que ya no hay cartas en el mazo.
         setChanged();
-        notifyObservers();
+        notifyObservers(true);
     }
     
     public void shuffleDeck(){

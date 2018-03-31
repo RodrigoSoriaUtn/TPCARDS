@@ -17,6 +17,16 @@ import java.util.Stack;
 public abstract class AbstractDeck <T extends AbstractCard> {
     protected List<T> cards;
     
+    /**
+     * used to generate a clean deck with no neccesity to specify a constructor
+     * of an specified class, just using the deck that you want to play.
+     * @return a deck with no cards of this type of deck.
+     * examples:
+     *  - Generating clean decks for the hand of the players.
+     *  - Generating a clean deck to store the cards that are used.
+     */
+    public abstract AbstractDeck generateCleanDeck();
+    
     public void shuffle(){
         Collections.shuffle(this.cards);
     }
@@ -25,9 +35,9 @@ public abstract class AbstractDeck <T extends AbstractCard> {
         return cards;    
     }
     
-    /*
-    Returns the actual cuantity of cards in the deck. Or the full size of the
-    deck if you have never take one from it.
+    /**
+     * @return Returns the actual cuantity of cards in the deck. Or the full size of the
+     * deck if you have never take one from it.
     */
      public int getActualCuantityOfCards(){
         return cards.size();

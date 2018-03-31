@@ -34,6 +34,7 @@ public class Player extends Observable implements Observer, Runnable{
         while(!endOfMatch){
             AbstractCard card = gameTable.takeThrowedCard();
             hand.addCard(card);
+            setChanged();
             notifyObservers(card);
         }
     }
@@ -44,5 +45,14 @@ public class Player extends Observable implements Observer, Runnable{
             this.endOfMatch = ((Boolean) arg); //method booleanValue() is not necessary (and generates a warning O.o')
         }
     }
+    
+    public String getNickName(){
+        return this.nickName;
+    }
+    
+    public AbstractDeck getHand(){
+        return this.hand;
+    }
+    
     
 }
