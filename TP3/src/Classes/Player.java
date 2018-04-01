@@ -8,44 +8,40 @@ package Classes;
 import Classes.Abstract.AbstractCard;
 import Classes.Abstract.AbstractDeck;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Extends observable to notify when it takes a card.
  * Implements Observer to be notified when the deck of the dealer is empty.
  * @author alumno
  */
-public class Player extends Observable implements Observer, Runnable{
+public class Player extends Observable implements Runnable{
     
-    String nickName;
-    AbstractDeck hand;
-    boolean endOfMatch;
-    Table gameTable;
+    private String nickName;
+    private AbstractDeck hand;
+    private Table gameTable;
+    
+    public Player(Player player){
+        this(player.getNickName(), player.getHand(), player.getGameTable());
+    }
     
     public Player(String nickName, AbstractDeck deck, Table table){
         this.nickName = nickName;
         this.hand = deck;
-        this.endOfMatch = false;
         this.gameTable = table;
     }
     
     @Override
     public void run() {
-        while(!endOfMatch){
+        while(!gameTable.isClosed()){
             AbstractCard card = gameTable.takeThrowedCard();
-            hand.addCard(card);
-            setChanged();
-            notifyObservers(card);
+            if(card != null){
+                hand.addCard(card);
+                setChanged();
+                notifyObservers(card);
+            }
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if(arg != null && arg instanceof Boolean){
-            this.endOfMatch = ((Boolean) arg); //method booleanValue() is not necessary (and generates a warning O.o')
-        }
-    }
-    
     public String getNickName(){
         return this.nickName;
     }
@@ -54,5 +50,8 @@ public class Player extends Observable implements Observer, Runnable{
         return this.hand;
     }
     
+    public Table getGameTable(){
+        return this.gameTable;
+    }
     
 }

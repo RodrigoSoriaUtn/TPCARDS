@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.Spanish;
 
 import Classes.Abstract.AbstractDeck;
-import java.util.Stack;
 
 /**
  *
@@ -14,8 +13,12 @@ import java.util.Stack;
  */
 public class SpanishDeck extends AbstractDeck{
     
+    public SpanishDeck(){
+        this(false);
+    }
+    
     public SpanishDeck(boolean withCards) {
-        cards = new Stack();
+        super();
         if(withCards){
             for(int palo = 0; palo < 4; palo++){
                 for(int i = 1; i < 13; i++){
@@ -27,6 +30,6 @@ public class SpanishDeck extends AbstractDeck{
 
     @Override
     public AbstractDeck generateCleanDeck() {
-        return new SpanishDeck(false);
+        return new SpanishDeck();
     }
 }

@@ -22,8 +22,8 @@ public class Relator implements Observer{
                 Player player = (Player) o;
                 AbstractCard card = (AbstractCard) arg;
 
-                System.out.println(player.getNickName() + " Toma un " + card.getValue()
-                                                             + " de " + card.getType());    
+                System.out.println(player.getNickName() + " Takes a " + card.getValue()
+                                                             + " of " + card.getType());    
             }
         }
     }

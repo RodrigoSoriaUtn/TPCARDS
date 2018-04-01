@@ -6,12 +6,11 @@
 package Classes;
 
 import Classes.Abstract.AbstractDeck;
-import java.util.Observable;
 /**
  *
  * @author alumno
  */
-public class Dealer extends Observable{
+public class Dealer{
     
     private AbstractDeck deck;
     private String nombre;
@@ -40,9 +39,8 @@ public class Dealer extends Observable{
                 table.setCardOnTable(deck.takeCard());
             }
         }
-        //Avisa que ya no hay cartas en el mazo.
-        setChanged();
-        notifyObservers(true);
+        //Cierra la mesa, indicando que el juego termino.
+        table.closeTable();
     }
     
     public void shuffleDeck(){

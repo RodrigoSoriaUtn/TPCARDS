@@ -19,9 +19,11 @@ public class Match {
     
     private final Table table;
     private List<Player> players;
+    private List<Thread> activePlayers;
     private Dealer dealer;
     private final Relator relator;
     private AbstractDeck deck;
+    private Winner winner;
     
     /**
      * Creates and initializes a match
@@ -36,13 +38,13 @@ public class Match {
         this.table = new Table();
         this.deck = deck;
         this.relator = new Relator();
+        this.winner = null;
         
         this.dealer = new Dealer(deck,"Henry", "Hafford",this.table);
         this.players = new ArrayList<>();
+        this.activePlayers = new ArrayList<>();
         
-        initPlayers(playerNickNames, players);
-        
-        
+        initPlayers(playerNickNames, players);   
         initMatch();
     }
 
@@ -51,29 +53,7 @@ public class Match {
         dealer.shuffleDeck();
         //Se define la forma de juego.
         for(Player player : players){
-            dealer.addObserver(player); //El jugador recibirá una notificación cuando ya no hayan cartas.
             player.addObserver(relator); //El relator indica quien agarra cada carta.
-        }
-    }
-
-    public void startMatch() {
-        
-        for(Player player : players){
-            Thread thread = new Thread(player);//Se coloca a cada jugador en un hilo para que comience el juego.
-            thread.start();
-        }
-        
-        dealer.throwCards(); // Comienza el juego.
-        
-        matchEnd(); // termina el juego
-    }
-
-    private void matchEnd() {
-        //Muestra resultados:
-        System.out.println("FIN DEL JUEGO. MOSTRANDO RESULTADOS...");
-        for(Player player : this.players){
-            int points = calculatePoints(player);
-            System.out.println(player.getNickName()+ ": " + points);
         }
     }
 
@@ -103,4 +83,39 @@ public class Match {
         }
         return points;
     }
+
+    public void startMatch() {
+        for(Player player : players){
+            Thread thread = new Thread(player);//Se coloca a cada jugador en un hilo para que comience el juego.
+            activePlayers.add(thread);
+            thread.start();
+        }
+        dealer.throwCards(); // Comienza el juego.
+        for(Thread thread : activePlayers){ // Espera que los jugadores finalicen sus tareas para terminar el juego.
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {
+                System.out.println("Error en la espera de los jugadores activos.");
+            }
+        }
+        matchEnd(); // termina el juego
+    }
+
+    private void matchEnd() {
+        //Muestra resultados:
+        System.out.println("FIN DEL JUEGO. MOSTRANDO RESULTADOS...");
+        for(Player player : this.players){
+            int points = calculatePoints(player);
+            System.out.println(player.getNickName()+ ": " + points);
+            //Define el ganador.
+            if(winner != null){
+                if(winner.getPoints() < points){
+                    winner = new Winner(player, points);
+                }
+            }else{
+                winner = new Winner(player, points);
+            }
+        }
+    }
+
 }

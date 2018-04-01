@@ -13,16 +13,18 @@ import Classes.Abstract.AbstractCard;
  */
 public class Table {
     
-    AbstractCard cardOnTable;
+    private boolean isClosed;
+    private AbstractCard cardOnTable;
     
     public Table(){
         cardOnTable = null;
+        isClosed = false;
     }
     
     public AbstractCard takeThrowedCard(){
         synchronized(this){
            
-            while(!isAcardOnTheTable()){
+            while(!isAcardOnTheTable() && !isClosed()){
                 try {
                     wait();
                 } catch (InterruptedException ex) { }
@@ -48,6 +50,17 @@ public class Table {
             if(cardOnTable != null) resp = true;
             return resp;
         }
+    }
+    
+    public void closeTable(){
+        synchronized(this){
+            this.isClosed = true;
+            notifyAll();
+        }
+    }
+    
+    public synchronized boolean isClosed(){
+        return this.isClosed;
     }
     
 }

@@ -26,6 +26,9 @@ public abstract class AbstractDeck <T extends AbstractCard> {
      *  - Generating a clean deck to store the cards that are used.
      */
     public abstract AbstractDeck generateCleanDeck();
+    protected AbstractDeck(){
+        cards = new Stack();
+    }
     
     public void shuffle(){
         Collections.shuffle(this.cards);
