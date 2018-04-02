@@ -11,8 +11,7 @@ import java.util.Observable;
 
 /**
  * Extends observable to notify when it takes a card.
- * Implements Observer to be notified when the deck of the dealer is empty.
- * @author alumno
+ * @author Rodrigo Soria
  */
 public class Player extends Observable implements Runnable{
     

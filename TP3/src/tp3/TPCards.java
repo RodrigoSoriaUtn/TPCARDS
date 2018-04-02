@@ -17,8 +17,8 @@ import java.sql.*;
  * @author rodrigo
  */
 public class TPCards {
-    
-    /*public static void main(String[] args){
+    /*
+    public static void main(String[] args){
         
         ArrayList<String> nicknames = new ArrayList<>();
         nicknames.add("Roderick");
@@ -33,11 +33,12 @@ public class TPCards {
         
     }
     */
+    
     public static void main(String[] args) throws SQLException{
 
         Connection conexion = null;
         try {
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/base", "usuario", "clave");
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "", "");
             
             //DriverManager.getConnection(“jdbc:mysql://localhost:3306/base_de_datos”, “usuario” , “clave”);
             
@@ -48,4 +49,5 @@ public class TPCards {
             }
         }
     }
+    
 }

@@ -60,12 +60,12 @@ public class Match {
     private void initPlayers(List<String> playerNickNames, int players) {
         
         if(playerNickNames.size() < players){ //generates players with nicknames and without nicknames
-            int j = 0;
+            int j = 1;
             for(String nickName : playerNickNames ){
                 this.players.add(new Player(nickName, this.deck.generateCleanDeck() ,this.table));
                 j++;
             }
-            while(j < players){
+            while(j <= players){
                 this.players.add(new Player("Player " + j, this.deck.generateCleanDeck(), this.table));
                 j++;
             }
@@ -116,6 +116,8 @@ public class Match {
                 winner = new Winner(player, points);
             }
         }
+        System.out.println("---------------------Y EL GANADOR ES:---------------------");
+        System.out.println(winner.getNickName() + " CON " + winner.getPoints() + " PUNTOS.");
     }
 
 }

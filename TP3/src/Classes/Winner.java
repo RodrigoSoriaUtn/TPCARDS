@@ -23,8 +23,4 @@ class Winner extends Player{
         return points;
     }
     
-    private void persist(){
-        
-    }
-    
 }
