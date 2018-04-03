@@ -13,4 +13,11 @@ import Classes.Abstract.EnumerableTypeOfCard;
  */
 public enum SpanishTypeOfCard implements EnumerableTypeOfCard{
     CUP, SWORD, CLUB, GOLD;
+
+    @Override
+    public String getTypeOfDeck() {
+        return "Spanish";
+    }
+    
+    
 }

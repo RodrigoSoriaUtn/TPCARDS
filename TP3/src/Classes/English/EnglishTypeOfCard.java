@@ -12,5 +12,12 @@ import Classes.Abstract.EnumerableTypeOfCard;
  * @author rodrigo
  */
 public enum EnglishTypeOfCard implements EnumerableTypeOfCard{
-    PIKE, HEART, DIAMOND, CLOVER
+    PIKE, HEART, DIAMOND, CLOVER;
+
+    @Override
+    public String getTypeOfDeck() {
+       return "English";
+    }
+    
+    
 }

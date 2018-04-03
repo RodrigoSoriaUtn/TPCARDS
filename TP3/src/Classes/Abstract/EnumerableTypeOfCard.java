@@ -8,9 +8,9 @@ package Classes.Abstract;
 /**
  *
  * @author rodrigo
- * No methods, it's just an interface to be implemented by ENUMS to save
+ * must be implemented by ENUMS to save
  * every type of cards on their respective deck
  */
 public interface EnumerableTypeOfCard {
-    
+    public abstract String getTypeOfDeck();
 }

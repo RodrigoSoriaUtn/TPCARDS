@@ -68,39 +68,113 @@ CREATE TABLE IF NOT EXISTS cardsOfWinnerPerMatch(
 
 DROP PROCEDURE IF EXISTS sp_savePlayerAndGetIdOrJustId;
 DELIMITER $$
-CREATE PROCEDURE sp_savePlayerAndGetIdOrJustId (in _nickName varchar(30))
+CREATE PROCEDURE sp_savePlayerAndGetIdOrJustId (in _nickName varchar(30), out _idOfPlayer int)
 BEGIN
-	DECLARE _idPlayer int;
     -- SI existe solo retorna el id. Sino existe lo agrega y retorna el ID.
     if exists ( select id_player from players
 					where nickName like _nickName) then
 		
-        set _idPlayer =  (select id_player from players 
+        set _idOfPlayer =  (select id_player from players 
 							where nickname like _nickName
 							limit 1);
 	else
 		insert into players(nickName) values (_nickName);
-        set _idPlayer = LAST_INSERT_ID();
+        set _idOfPlayer = LAST_INSERT_ID();
     END IF;
     
-    select _idPlayer;
 END;
 $$
 
-
-DROP PROCEDURE IF EXISTS sp_saveWinner;
+ 
+DROP PROCEDURE IF EXISTS sp_saveWinnerAndGetId;
 DELIMITER $$
-CREATE PROCEDURE sp_saveWinner (in _nickName varchar(30), in _points int)
+CREATE PROCEDURE sp_saveWinnerAndGetId (in _nickName varchar(30), in _points int, out _winnerId int)
 BEGIN
 	DECLARE _idPlayer int;
-    set _idPlayer = sp_savePlayerAndGetIdOrJustId (_nickName);
+    call sp_savePlayerAndGetIdOrJustId (_nickName, @idPlayer);
     
 	if _idPlayer != 0 then 
 		insert into winners(fk_idPlayers, points) 
 			values (_idPlayer, _points);
+		set _winnerId = LAST_INSERT_ID();
+	else
+		set _winnerId = 0; -- 0 represents no winner.
 	END IF;
 END;
 $$
+
+DROP PROCEDURE IF EXISTS sp_saveTypeOfDeckAndGetIdOrJustId;
+DELIMITER &&
+CREATE PROCEDURE sp_saveTypeOfDeckAndGetIdOrJustId(in _deckTypeName varchar(30), out _deckId int)
+BEGIN
+
+	if exists ( select id_typeOfDeck from typeOfDecks
+					where typeOfDeck like _deckTypeName) then
+                    
+		set _deckId =  (select id_typeOfDeck from typeOfDecks 
+							where typeOfDeck like _deckTypeName
+							limit 1);
+	else
+		insert into typeOfDecks(typeOfDeck) values (_deckTypeName);
+        set _deckId = LAST_INSERT_ID();
+    END IF;
+END;
+&&
+
+DROP PROCEDURE IF EXISTS sp_saveTypeOfCardAndGetIdOrJustId;
+DELIMITER &&
+CREATE PROCEDURE sp_saveTypeOfCardAndGetIdOrJustId(in _cardTypeName varchar(30), in _typeOfDeck varchar(30),
+												   out _cardTypeId int)
+BEGIN
+	DECLARE _deckId int;
+    call sp_saveTypeOfDeckAndGetIdOrJustId(_typeOfDeck, @_deckId);
+    
+	if exists ( select id_typeOfCard from typeOfCards
+					where typeOfCard like _cardTypeName) then
+                    
+		set _cardTypeId =  (select id_typeOfCard from typeOfCards
+								where typeOfCard like _cardTypeName
+								limit 1);
+	else
+		insert into typeOfCards(typeOfCard, fk_idtypeOfDeck) values (_cardTypeName, _deckId);
+        set _cardTypeId = LAST_INSERT_ID();
+    END IF;
+END;
+&&
+
+
+DROP PROCEDURE IF EXISTS sp_saveCard;
+DELIMITER &&
+CREATE PROCEDURE sp_saveCard(in _cardValue int, in _cardType varchar(30), in _deckName varchar(30))
+BEGIN
+	DECLARE _typeOfDeckId int;
+    DECLARE _typeOfCardId int;
+    
+    call sp_saveTypeOfCardAndGetIdOrJustId(_cardType, _deckName, @_typeOfCardId);
+    
+    IF NOT EXISTS ( SELECT id_card FROM cards
+					WHERE valueOfCard = _cardValue AND fk_idTypeOfCard = _typeOfCardId) THEN
+		INSERT INTO cards(valueOfCard, fk_idTypeOfCard) VALUES(_cardValue, _typeOfCardId);
+    END IF;
+	
+END;
+&&
+
+
+DROP PROCEDURE IF EXISTS saveMatch;
+DELIMITER //
+CREATE PROCEDURE saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int)
+BEGIN
+	DECLARE _winnerId int;
+	call sp_saveWinnerAndGetId(_winnerNickName, _winnerPoints, @_winnerId);
+	
+    insert into matchs(cuantityOfPlayers, fk_idWinner) values (_cuantityOfPlayers, _winnerId);
+    
+END;
+//
+
+
+
 
 
 
