@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class Match {
     
+    private int id;
     private final Table table;
     private List<Player> players;
     private List<Thread> activePlayers;

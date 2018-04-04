@@ -166,16 +166,34 @@ DELIMITER //
 CREATE PROCEDURE saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int)
 BEGIN
 	DECLARE _winnerId int;
-	call sp_saveWinnerAndGetId(_winnerNickName, _winnerPoints, @_winnerId);
+	DECLARE _matchId int;
+    call sp_saveWinnerAndGetId(_winnerNickName, _winnerPoints, @_winnerId);
 	
     insert into matchs(cuantityOfPlayers, fk_idWinner) values (_cuantityOfPlayers, _winnerId);
+END;
+//
+
+DROP PROCEDURE IF EXISTS saveMatchResult;
+DELIMITER //
+CREATE PROCEDURE saveMatchResult(in _nickName varchar(30), in _points int, in _idMatch int)
+BEGIN
+	DECLARE _playerId int;
+    set _playerId = sp_savePlayerAndGetIdOrJustId(_nickName, @_playerId);
     
+    insert into matchResults(fpk_idMatch, fk_idPlayer, points)
+		values(_idMatch, _playerId, _points);
 END;
 //
 
 
-
-
+CREATE TABLE IF NOT EXISTS matchResults (
+    fpk_idMatch INT NOT NULL,
+    fk_idPlayer INT NOT NULL,
+    points INT NOT NULL,
+    FOREIGN KEY (fpk_idMatch) REFERENCES matchs (id_match),
+    FOREIGN KEY (fk_idPlayer) REFERENCES players (id_player),
+    PRIMARY KEY (fpk_idMatch)
+);
 
 
 
