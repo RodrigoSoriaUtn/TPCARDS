@@ -9,6 +9,7 @@ import Classes.Abstract.AbstractDeck;
 import Classes.English.EnglishDeck;
 import Classes.Match;
 import Classes.Spanish.SpanishDeck;
+import DBA.config.DatabaseConnection;
 import java.util.ArrayList;
 import java.sql.*;
 
@@ -17,7 +18,7 @@ import java.sql.*;
  * @author rodrigo
  */
 public class TPCards {
-    /*
+    
     public static void main(String[] args){
         
         ArrayList<String> nicknames = new ArrayList<>();
@@ -25,22 +26,21 @@ public class TPCards {
         nicknames.add("Almanax");
         nicknames.add("HalfZhairer");
         
-        //AbstractDeck deck = new SpanishDeck(true);
-        AbstractDeck deck = new EnglishDeck(true);
+        AbstractDeck deck = new SpanishDeck(true);
+        //AbstractDeck deck = new EnglishDeck(true);
         Match match = new Match(4, nicknames, deck);
         
         match.startMatch();
         
     }
-    */
-    
+    /*
     public static void main(String[] args) throws SQLException{
 
         Connection conexion = null;
         try {
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "", "");
+            conexion = DatabaseConnection.getInstance();
             
-            //DriverManager.getConnection(“jdbc:mysql://localhost:3306/base_de_datos”, “usuario” , “clave”);
+            
             
         }
         finally {
@@ -48,6 +48,6 @@ public class TPCards {
                 conexion.close();
             }
         }
+        */
     }
     
-}

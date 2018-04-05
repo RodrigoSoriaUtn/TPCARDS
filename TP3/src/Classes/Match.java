@@ -35,7 +35,7 @@ public class Match {
      * @param deck : The deck to play.
      */
     public Match(int players, List<String> playerNickNames, AbstractDeck deck){
-        
+        this.id = 0;
         this.table = new Table();
         this.deck = deck;
         this.relator = new Relator();

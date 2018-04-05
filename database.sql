@@ -161,9 +161,9 @@ END;
 &&
 
 
-DROP PROCEDURE IF EXISTS saveMatch;
+DROP PROCEDURE IF EXISTS sp_saveMatch;
 DELIMITER //
-CREATE PROCEDURE saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int)
+CREATE PROCEDURE sp_saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int)
 BEGIN
 	DECLARE _winnerId int;
 	DECLARE _matchId int;
@@ -173,9 +173,9 @@ BEGIN
 END;
 //
 
-DROP PROCEDURE IF EXISTS saveMatchResult;
+DROP PROCEDURE IF EXISTS sp_saveMatchResult;
 DELIMITER //
-CREATE PROCEDURE saveMatchResult(in _nickName varchar(30), in _points int, in _idMatch int)
+CREATE PROCEDURE sp_saveMatchResult(in _nickName varchar(30), in _points int, in _idMatch int)
 BEGIN
 	DECLARE _playerId int;
     set _playerId = sp_savePlayerAndGetIdOrJustId(_nickName, @_playerId);
@@ -185,17 +185,58 @@ BEGIN
 END;
 //
 
+DROP FUNCTION IF EXISTS fc_getWinnerIdByNameAndMatch;
+DELIMITER $$ 
+CREATE FUNCTION fc_getWinnerIdByNameAndMatch(_matchId int, _winnerNickName varchar(30)) RETURNS INT
+-- RETURNS the id of the winner or 0 if there is no winner.
+BEGIN
+	
+    DECLARE _idWinner int;
+    SET _idWinner = 0;
+    if exists ( select fk_idWinner, id_match from matchs
+					where id_match = _matchId
+					and fk_idWinner in (select id_winner from winners
+											inner join players p on p.nickName like _winnerNickName) 
+			   ) then
+		set _idWinner = (select fk_idWinner from matchs
+							where id_match = _matchId
+                            limit 1);
+    END IF;
+    RETURN _idWinner;
+END;
+$$
 
-CREATE TABLE IF NOT EXISTS matchResults (
-    fpk_idMatch INT NOT NULL,
-    fk_idPlayer INT NOT NULL,
-    points INT NOT NULL,
-    FOREIGN KEY (fpk_idMatch) REFERENCES matchs (id_match),
-    FOREIGN KEY (fk_idPlayer) REFERENCES players (id_player),
-    PRIMARY KEY (fpk_idMatch)
-);
+DROP FUNCTION IF EXISTS fc_getCardIdOrZero;
+DELIMITER $$ 
+CREATE FUNCTION fc_getCardIdOrZero(_cardValue int, _cardTypeName varchar(30)) RETURNS int
+BEGIN
+	DECLARE _cardId int;
+    SET _cardId = 0;
+	if exists( select id_card from cards
+					inner join typeOfCards typeOfC on fk_idTypeOfCard = typeOfC.id_typeOfCard
+					where _cardValue = _cardValue and typeOfC.typeOfCard like _cardTypeName
+			) then
+		SET _cardId = (select id_card from cards
+						inner join typeOfCards typeOfC on fk_idTypeOfCard = typeOfC.id_typeOfCard
+						where _cardValue = _cardValue and typeOfC.typeOfCard like _cardTypeName
+						);
+	END IF;
+    RETURN _cardId;
+END;
+$$
 
 
-
-
-
+DROP PROCEDURE IF EXISTS sp_saveCardsOfWinnerPerMatch;
+DELIMITER &&
+CREATE PROCEDURE sp_saveCardsOfWinnerPerMatch(in _cardValue int, in _cardTypeName varchar(30),
+										in _winnerNickName varchar(30), in _matchId int)
+BEGIN
+    DECLARE _winnerId int;
+    DECLARE _cardId int;
+    SET _winnerId = fc_getWinnerIdByNameAndMatch(_matchId, _winnerNickName);
+    SET _cardId = fc_getCardIdOrZero(_cardValue, _cardTypeName);
+    
+	insert into cardsOfWinnerPerMatch(fk_idCard, fk_idWinner, fk_idMatch) values (_cardId, _winnerId, _matchId);
+    
+END;
+&&
