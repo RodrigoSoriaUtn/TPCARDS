@@ -10,7 +10,7 @@ package Classes;
  *
  * @author rodrigo
  */
-class Winner extends Player{
+public class Winner extends Player{
     
     private int points;
     

@@ -121,4 +121,15 @@ public class Match {
         System.out.println(winner.getNickName() + " CON " + winner.getPoints() + " PUNTOS.");
     }
 
+    public Winner getWinner() {
+        return winner;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+    
+    public int getCuantityOfPlayers(){
+        return players.size();
+    }
 }
