@@ -51,12 +51,33 @@ public class CardDao {
                 System.out.println("Error al ejecutar el stored procedure");
             
         } catch (SQLException ex) {
-            System.out.println("Error al procesar el procedimiento: " + ex.getMessage());
+            ex.printStackTrace();
         }
         
     }
     
-    public void saveCardOfWinnerPerMatch(){
+    public void saveCardOfWinnerPerMatch(int cardValue, String cardType, String deckName,
+                                            String winnerNickName, int matchId){
+        
+        String query = sqlQueries.getProperty("storedProc.saveCardOfPlayerPerMatch");
+        
+        try {
+            CallableStatement proc = connection.prepareCall(query);
+            
+            proc.setInt(1, cardValue);
+            proc.setString(2, cardType);
+            proc.setString(3, deckName);
+            proc.setString(4, winnerNickName);
+            proc.setInt(5, matchId);
+            
+            if(!proc.execute())
+                System.out.println("Error al ejecutar el stored procedure");
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        
         
     }
     

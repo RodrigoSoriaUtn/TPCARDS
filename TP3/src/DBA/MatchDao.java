@@ -7,16 +7,12 @@ package DBA;
 
 import Classes.Match;
 import Classes.Player;
-import Classes.Winner;
 import DBA.config.DatabaseConnection;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +24,7 @@ public class MatchDao {
     
     private Connection connection;
     
-    private MatchDao(){
+    public MatchDao(){
         connection = DatabaseConnection.getInstance();
         try {
             sqlQueries.load(new FileInputStream("../config/SqlQueries.properties"));
@@ -52,7 +48,7 @@ public class MatchDao {
             procedure.setInt(3, match.getWinner().getPoints());
             
         } catch (SQLException ex) {
-            System.out.println("Error al procesar el procedimiento: " + ex.getMessage());
+            ex.printStackTrace();
         }
         
         return id;
@@ -72,7 +68,7 @@ public class MatchDao {
                 System.out.println("Error al ejecutar el stored procedure");
             
         } catch (SQLException ex) {
-            System.out.println("Error al procesar el procedimiento: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
     

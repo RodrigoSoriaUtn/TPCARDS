@@ -7,6 +7,8 @@ package Classes;
 
 import Classes.Abstract.AbstractCard;
 import Classes.Abstract.AbstractDeck;
+import DBA.CardDao;
+import DBA.MatchDao;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,9 @@ import java.util.List;
  * @author Rodrigo Soria
  */
 public class Match {
+    
+    private static MatchDao matchDao = new MatchDao();
+    private static CardDao cardDao = new CardDao();
     
     private int id;
     private final Table table;
@@ -108,6 +113,7 @@ public class Match {
         for(Player player : this.players){
             int points = calculatePoints(player);
             System.out.println(player.getNickName()+ ": " + points);
+            player.setPoints(points);
             //Define el ganador.
             if(winner != null){
                 if(winner.getPoints() < points){
@@ -119,6 +125,9 @@ public class Match {
         }
         System.out.println("---------------------Y EL GANADOR ES:---------------------");
         System.out.println(winner.getNickName() + " CON " + winner.getPoints() + " PUNTOS.");
+        
+        saveMatch();
+        
     }
 
     public Winner getWinner() {
@@ -132,4 +141,25 @@ public class Match {
     public int getCuantityOfPlayers(){
         return players.size();
     }
+
+    private void saveMatch() {
+        
+        //Guarda la partida.
+        this.id = matchDao.saveMatch(this);
+        //Guarda los resultados de cada jugador.
+        for(Player player : players){
+            matchDao.saveResultOfPlayer(player, player.points, id);
+        }
+        //Guarda las cartas del ganador de la partida.
+        for(Object obj : winner.getHand().getCards()){
+            if(obj instanceof AbstractCard){
+                AbstractCard card = (AbstractCard) obj;
+                cardDao.saveCardOfWinnerPerMatch(card.getValue(), card.getType().toString(), 
+                                        card.getType().getTypeOfDeck(), winner.getNickName(), id);
+            }
+        }
+    }
+    
+    
+    
 }

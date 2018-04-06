@@ -12,15 +12,10 @@ package Classes;
  */
 public class Winner extends Player{
     
-    private int points;
     
     public Winner(Player player, int points) {
         super(player);
         this.points = points;
-    }
-
-    public int getPoints() {
-        return points;
     }
     
 }

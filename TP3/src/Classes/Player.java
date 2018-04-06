@@ -15,6 +15,7 @@ import java.util.Observable;
  */
 public class Player extends Observable implements Runnable{
     
+    protected int points;
     private String nickName;
     private AbstractDeck hand;
     private Table gameTable;
@@ -27,6 +28,7 @@ public class Player extends Observable implements Runnable{
         this.nickName = nickName;
         this.hand = deck;
         this.gameTable = table;
+        this.points = 0;
     }
     
     @Override
@@ -52,5 +54,14 @@ public class Player extends Observable implements Runnable{
     public Table getGameTable(){
         return this.gameTable;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+    
     
 }
