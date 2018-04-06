@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/RSoria/TPCARDS/TP3/src/DBA/config/DatabaseConnection.java</file>
             <file>file:/D:/RSoria/TPCARDS/TP3/src/DBA/MatchDao.java</file>
-            <file>file:/D:/RSoria/TPCARDS/TP3/src/tp3/TPCards.java</file>
-            <file>file:/D:/RSoria/TPCARDS/TP3/src/Classes/Match.java</file>
+            <file>file:/D:/RSoria/TPCARDS/TP3/src/Classes/Abstract/AbstractCard.java</file>
+            <file>file:/D:/RSoria/TPCARDS/TP3/src/DBA/CardDao.java</file>
+            <file>file:/D:/RSoria/TPCARDS/TP3/src/Classes/Winner.java</file>
             <file>file:/D:/RSoria/TPCARDS/TP3/src/config/SqlQueries.properties</file>
+            <file>file:/D:/RSoria/TPCARDS/TP3/src/Classes/Match.java</file>
         </group>
     </open-files>
 </project-private>
