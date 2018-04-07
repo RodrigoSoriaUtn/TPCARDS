@@ -7,14 +7,10 @@ package DBA;
 
 import Classes.Abstract.AbstractCard;
 import DBA.config.DatabaseConnection;
-import java.io.FileInputStream;
-import java.io.IOException;
+import DBA.config.DatabaseProcedures;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,23 +18,17 @@ import java.util.logging.Logger;
  */
 public class CardDao {
     
-    private Properties sqlQueries = new Properties();
     
     private Connection connection;
     
     public CardDao(){
         connection = DatabaseConnection.getInstance();
-        try {
-            sqlQueries.load(new FileInputStream("../config/SqlQueries.properties"));
-        } catch (IOException ex) {
-            System.out.println("Error al cargar las propiedades en MatchDao: " + ex.getMessage());
-        }
         
     }
     
     public void saveCard(AbstractCard card){
         
-        String query = sqlQueries.getProperty("storedProc.saveCard");
+        String query = DatabaseProcedures.SAVECARD.getQuery();
         
         try {
             CallableStatement proc = connection.prepareCall(query);
@@ -47,8 +37,7 @@ public class CardDao {
             proc.setString(2, card.getType().toString());
             proc.setString(3, card.getType().getTypeOfDeck());
             
-            if(!proc.execute())
-                System.out.println("Error al ejecutar el stored procedure");
+            proc.execute();
             
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -59,7 +48,7 @@ public class CardDao {
     public void saveCardOfWinnerPerMatch(int cardValue, String cardType, String deckName,
                                             String winnerNickName, int matchId){
         
-        String query = sqlQueries.getProperty("storedProc.saveCardOfPlayerPerMatch");
+        String query = DatabaseProcedures.SAVECARDOFPLAYERPERMATCH.getQuery();
         
         try {
             CallableStatement proc = connection.prepareCall(query);
@@ -70,8 +59,7 @@ public class CardDao {
             proc.setString(4, winnerNickName);
             proc.setInt(5, matchId);
             
-            if(!proc.execute())
-                System.out.println("Error al ejecutar el stored procedure");
+            proc.execute();
             
         } catch (SQLException ex) {
             ex.printStackTrace();

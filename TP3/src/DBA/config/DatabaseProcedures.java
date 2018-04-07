@@ -11,18 +11,30 @@ package DBA.config;
  */
 public enum DatabaseProcedures {
     SAVECARDOFPLAYERPERMATCH{
+        @Override
         public String getQuery(){
-            return "{call sp_saveCardsOfWinnerPerMatch (?,?,?,?)}";
+            return "{call sp_saveCardsOfWinnerPerMatch (?,?,?,?,?)}";
         }
     },
+    SAVEMATCHRESULT{
+        @Override
+        public String getQuery(){
+            return "{call sp_saveMatchResult(?,?,?)}";
+        }
+    },
+    SAVEMATCH{
+        @Override
+        public String getQuery(){
+            return "{call sp_saveMatch(?,?,?,?)}";
+        }
+    },
+    SAVECARD{
+        @Override
+        public String getQuery(){
+            return "{call sp_saveCard(?,?,?)}";
+        }
+    };
     
-    saveMatchResult(""),
-    saveMatch(""),
-    saveCard("");
-    storedProc.saveCardOfPlayerPerMatch=
-    storedProc.saveMatchResult={call sp_saveMatchResult(?,?,?)}
-    storedProc.saveMatch={call sp_saveMatch(?,?,?)}
-    storedProc.saveCard={call sp_saveCard(?,?,?)}
-    
+    public abstract String getQuery();
     
 }

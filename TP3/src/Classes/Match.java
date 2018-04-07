@@ -148,14 +148,14 @@ public class Match {
         this.id = matchDao.saveMatch(this);
         //Guarda los resultados de cada jugador.
         for(Player player : players){
-            matchDao.saveResultOfPlayer(player, player.points, id);
+            matchDao.saveResultOfPlayer(player, player.points, this.id);
         }
         //Guarda las cartas del ganador de la partida.
         for(Object obj : winner.getHand().getCards()){
             if(obj instanceof AbstractCard){
                 AbstractCard card = (AbstractCard) obj;
                 cardDao.saveCardOfWinnerPerMatch(card.getValue(), card.getType().toString(), 
-                                        card.getType().getTypeOfDeck(), winner.getNickName(), id);
+                                        card.getType().getTypeOfDeck(), winner.getNickName(), this.id);
             }
         }
     }

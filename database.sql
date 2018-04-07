@@ -164,12 +164,13 @@ END;
 
 DROP PROCEDURE IF EXISTS sp_saveMatch;
 DELIMITER //
-CREATE PROCEDURE sp_saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int)
+CREATE PROCEDURE sp_saveMatch(in _cuantityOfPlayers int, in _winnerNickName varchar(30), in _winnerPoints int, out _matchId int)
 BEGIN
-	DECLARE _matchId int;
     call sp_saveWinnerAndGetId(_winnerNickName, _winnerPoints, @_winnerId);
 	
     insert into matchs(cuantityOfPlayers, fk_idWinner) values (_cuantityOfPlayers, @_winnerId);
+    set _matchId = last_insert_id();
+    
 END;
 //
 

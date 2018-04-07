@@ -26,28 +26,12 @@ public class TPCards {
         nicknames.add("Almanax");
         nicknames.add("HalfZhairer");
         
-        AbstractDeck deck = new SpanishDeck(true);
-        //AbstractDeck deck = new EnglishDeck(true);
+        //AbstractDeck deck = new SpanishDeck(true);
+        AbstractDeck deck = new EnglishDeck(true);
         Match match = new Match(4, nicknames, deck);
         
         match.startMatch();
         
     }
-    /*
-    public static void main(String[] args) throws SQLException{
-
-        Connection conexion = null;
-        try {
-            conexion = DatabaseConnection.getInstance();
-            
-            
-            
-        }
-        finally {
-            if (conexion != null) {
-                conexion.close();
-            }
-        }
-        */
-    }
+}
     

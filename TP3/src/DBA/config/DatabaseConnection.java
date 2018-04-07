@@ -5,9 +5,15 @@
  */
 package DBA.config;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -18,11 +24,17 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     
     private static Connection connection = null;
+    private static Properties connProp;
     
     public static Connection getInstance(){
         if(connection == null){
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "root", "");
+                obtainProperties();
+                
+                //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "root", "Alforja500Mythril800Pizza100");
+                connection = DriverManager.getConnection(
+                                connProp.getProperty("connection")+connProp.getProperty("host")+connProp.getProperty("database") ,
+                                  connProp.getProperty("user"), connProp.getProperty("password"));
             } catch (SQLException ex) {
                 System.out.println("Error en la conexion con la base de datos: " + ex.getMessage());
             }
@@ -30,8 +42,19 @@ public class DatabaseConnection {
         return connection;
     }
     
-    private DatabaseConnection(){
-        
+    private DatabaseConnection(){ }
+    
+    private static void obtainProperties(){
+        String rutaActual = System.getProperty("user.dir");
+        rutaActual += "\\config\\DatabaseProperties.properties";
+        connProp = new Properties();
+        try{
+            connProp.load(new FileInputStream(rutaActual));
+        }catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error al cargar las propiedades de la bse de datos: " + ex.getMessage());
+        }
     }
     
 }
