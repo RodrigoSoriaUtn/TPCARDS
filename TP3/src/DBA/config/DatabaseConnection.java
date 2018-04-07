@@ -31,7 +31,7 @@ public class DatabaseConnection {
             try {
                 obtainProperties();
                 
-                //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "root", "Alforja500Mythril800Pizza100");
+                //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TPCARDS", "root", "");
                 connection = DriverManager.getConnection(
                                 connProp.getProperty("connection")+connProp.getProperty("host")+connProp.getProperty("database") ,
                                   connProp.getProperty("user"), connProp.getProperty("password"));
